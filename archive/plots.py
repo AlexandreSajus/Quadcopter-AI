@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-results = list(np.load("temp.npy"))
+results = list(np.load("archive/DQN_results.npy"))
 new = []
 decay = 5
 for i in range(decay, len(results)):
