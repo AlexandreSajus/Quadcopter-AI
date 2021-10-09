@@ -116,7 +116,6 @@ metrics = [
 ]
 
 if config.load_model:
-    print("loaded")
     agent.load(config.load_path)
 
 pg = rl.Playground(env, agent)
