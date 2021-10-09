@@ -1,0 +1,4 @@
+models1, models2, models3 are the first failed training attempts
+
+models5 is a failed attempt at taking models4 and changing the reward model
+failure probably came from a bugged agent.load function (fixed)
