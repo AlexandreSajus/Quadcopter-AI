@@ -5,8 +5,7 @@ More information at:
 https://github.com/AlexandreSajus/2D-Quadcopter-AI
 
 This is a simple game where you control a 2D Quadcopter with arrow keys
-The goal is to reach as many targets as possible within the time limit
-This is used as a base to create a simulation environment
+The goal is to reach the target and hover around it
 """
 
 import pygame
