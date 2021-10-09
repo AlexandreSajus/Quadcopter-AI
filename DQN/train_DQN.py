@@ -11,7 +11,7 @@ Just modify the config variable and run
 import learnrl as rl
 import tensorflow as tf
 from DQN.env_DQN import droneEnv
-from DQN.agent_DQN import DQNAgent, Memory, EpsGreedy, QLearning
+from DQN.agent_DQN import DQNAgent, Memory, EpsGreedy, QLearning, ScoreCallback
 
 kl = tf.keras.layers
 
@@ -50,13 +50,13 @@ config = {
 
     'mem_method': 'random',
 
-    'render_every_frame': True,
+    'render_every_frame': False,
     'mouse_target': False,
     'test_only': True,
 
     'generations': 1000,
     'episodes_per_gen': 1000,
-    'test_episodes': 10,
+    'test_episodes': 5,
 
     'load_model': True,
     'load_path': "models/DQN/models8/newborn01gen23.h5",
@@ -120,6 +120,7 @@ if config.load_model:
     agent.load(config.load_path)
 
 pg = rl.Playground(env, agent)
+score = ScoreCallback()
 
 gens = config.generations
 
@@ -133,4 +134,6 @@ if not config.test_only:
         agent.save(config.save_path + str(i))
 
 pg.test(config.test_episodes, verbose=1, episodes_cycle_len=1,
-        callbacks=[])
+        callbacks=[score])
+
+print("Total score: " + str(int(score.score)))

@@ -63,11 +63,8 @@ class droneEnv(gym.Env):
         self.reward = 0
         self.time = 0
         self.time_limit = 20
-<<<<<<< HEAD:DQN/env_DQN.py
         if self.mouse_target == True:
             self.time_limit = 1000
-=======
->>>>>>> 7109c03add11129ac1cb46f35be16916e4f4e202:drone_env_DQN.py
 
         # 5 actions: Nothing, Up, Down, Right, Left
         self.action_space = gym.spaces.Discrete(5)
@@ -191,29 +188,3 @@ class droneEnv(gym.Env):
 
     def close(self):
         pass
-<<<<<<< HEAD:DQN/env_DQN.py
-=======
-
-"""
-env = droneEnv()
-
-obs = env.reset()
-env.render("yes")
-
-print(env.observation_space)
-print(env.action_space)
-print(env.action_space.sample())
-
-GO_LEFT = 1
-# Hardcoded best agent: always go left!
-n_steps = 1000
-for step in range(n_steps):
-    print("Step {}".format(step + 1))
-    obs, reward, done, info = env.step(GO_LEFT)
-    print('obs=', obs, 'reward=', reward, 'done=', done)
-    env.render("yes")
-    if done:
-        print("Goal reached!", "reward=", reward)
-        break
-"""
->>>>>>> 7109c03add11129ac1cb46f35be16916e4f4e202:drone_env_DQN.py
