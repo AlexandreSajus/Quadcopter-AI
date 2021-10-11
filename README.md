@@ -5,7 +5,8 @@ The full scope of this project is to benchmark different ways to control a quadc
 * **Human**: discrete control of the propellers with the arrow keys
 * **DQN**: fully emergent behavior, no imitation learning, same controls as human
 * **PID**: cascade control with multiple PIDs
-* **DRPID**: adaptive PID using Reinforcement Learning (DDPG) to modify the PID values in real-time
+* **GenPID**: PID Tuning using genetic algorithms
+* **RLPID**: using Reinforcement Learning (DDPG) to set the PID target in real time
 
 Here is an example of a trained DQN agent following a target:
 
