@@ -1,3 +1,14 @@
+"""
+2D Quadcopter AI by Alexandre Sajus
+
+More information at:
+https://github.com/AlexandreSajus/2D-Quadcopter-AI
+
+Simple PID Controller
+Learned from this tutorial on Youtube:
+https://www.youtube.com/watch?v=ZMI_kpNUgJM&ab_channel=OrionAerospace
+"""
+
 class PID():
 	def __init__(self,KP,KI,KD,saturation_max,saturation_min):
 		self.kp = KP

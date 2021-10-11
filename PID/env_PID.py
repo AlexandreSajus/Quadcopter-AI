@@ -162,9 +162,6 @@ class droneEnv(gym.Env):
         self.screen.blit(player_copy, (self.x - int(player_copy.get_width()/2),
                                        self.y - int(player_copy.get_height()/2)))
 
-        textsurface = self.myfont.render(
-            'Collected: ' + str(self.target_counter), False, (255, 255, 255))
-        self.screen.blit(textsurface, (20, 20))
         textsurface3 = self.myfont.render(
             'Time: ' + str(int(self.time)), False, (255, 255, 255))
         self.screen.blit(textsurface3, (20, 50))
