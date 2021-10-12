@@ -217,4 +217,12 @@ class DQNAgent(rl.Agent):
             filename, custom_objects={'tf': tf})
         self.actor_opt = tf.optimizers.Adam(lr=self.learning_rate)
         self.action_value.compile(self.actor_opt)
-        self.target_av = self.action_value
+        self.target_av = tf.keras.models.clone_model(self.action_value)
+
+class ScoreCallback(rl.Callback):
+
+    def __init__(self):
+        self.score = 0
+
+    def on_step_end(self, step, logs):
+        self.score += self.playground.env.reward
