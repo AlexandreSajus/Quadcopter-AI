@@ -10,7 +10,7 @@ Just modify the config variable and run
 
 import learnrl as rl
 import tensorflow as tf
-from DQN.env_DQN import droneEnv
+from DQN.env_DQN_3 import droneEnv
 from DQN.agent_DQN import DQNAgent, Memory, EpsGreedy, QLearning, ScoreCallback
 
 kl = tf.keras.layers
@@ -50,7 +50,7 @@ config = {
 
     'mem_method': 'random',
 
-    'render_every_frame': False,
+    'render_every_frame': True,
     'mouse_target': False,
     'test_only': True,
 
@@ -59,7 +59,7 @@ config = {
     'test_episodes': 5,
 
     'load_model': True,
-    'load_path': "models/DQN/models8/newborn01gen23.h5",
+    'load_path': "models/DQN/models10/kid01gen15.h5",
     'save_path': "models/DQN/models9/newborn01gen"
 }
 

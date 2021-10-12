@@ -8,10 +8,10 @@ This is where you can train and test PID agents
 Just modify the PID values and run
 """
 
-from PID.env_PID import droneEnv
+from PID.env_PID_3 import droneEnv
 from PID.controller_PID import PID
 
-env = droneEnv(render_every_frame=True, mouse_target=True)
+env = droneEnv(render_every_frame=True, mouse_target=False)
 
 xPID = PID(0.2,0,0.2,25,-25)
 aPID = PID(0.02,0,0.01,1,-1)
