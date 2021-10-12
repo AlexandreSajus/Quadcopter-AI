@@ -6,7 +6,7 @@ https://github.com/AlexandreSajus/2D-Quadcopter-AI
 
 This is a gym environment based on drone_game (see drone_game.py for details)
 It is to be used with a DQN agent
-The goal is to reach and hover around a randomly positoned target
+The goal is to reach randomly positoned targets
 """
 
 import numpy as np
