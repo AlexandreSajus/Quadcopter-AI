@@ -11,3 +11,7 @@ models9 is the continuation of models8 (exp from 4.8 to 3.4 with exploration_dec
 models10 is the continuation of models9 on ENV2 (exp from 0.8 to 0.5 with exploration_decay = 4e-7)
 
 models11 is the continuation of models10 on ENV2 (exp from 0.5 to 0.3 with exploration_decay = 4e-7)
+
+models12 is the continuation of models11 on ENV3 (exp from 0.9 to 0.75 with exploration_decay = 2e-7)
+
+models13 is the continuation of models12 on ENV3 (exp from 0.75 to 0.5 with exploration_decay = 2e-7)
