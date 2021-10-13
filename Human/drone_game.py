@@ -38,14 +38,24 @@ FramePerSec = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-player = pygame.image.load(os.path.join("media/drone.png"))
-player.convert()
+player_width = 80
+player_speed = 0.3
+player = []
+for i in range(1,5):
+    image = pygame.image.load(os.path.join("assets/balloon-flat-asset-pack/png/objects/drone-sprites/drone-" + str(i) + ".png"))
+    image.convert()
+    player.append(pygame.transform.scale(image,(player_width,int(player_width*0.30))))
 
-target = pygame.image.load(os.path.join("media/target.png"))
-target.convert()
+target_width = 30
+target_speed = 0.1
+target = []
+for i in range(1,8):
+    image = pygame.image.load(os.path.join("assets/balloon-flat-asset-pack/png/balloon-sprites/red-plain/red-plain-" + str(i) + ".png"))
+    image.convert()
+    target.append(pygame.transform.scale(image,(target_width,int(target_width*1.73))))
 
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 20)
+myfont = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 30)
 
 # Initialize physics variables (a=angle) (xt,yt=target_coords)
 (a, ad, add) = (0, 0, 0)
@@ -56,16 +66,17 @@ yt = randrange(200, 600)
 
 # Initialize game variables
 target_counter = 0
-reward = 0
 time = 0
-time_limit = 100
+step = 0
+time_limit = 30
 
 # Game loop
 while True:
     pygame.event.get()
-    screen.fill(0)
+    screen.fill((131,176,181))
 
     time += 1/60
+    step += 1
 
     # Initialize accelerations
     xdd = 0
@@ -104,35 +115,31 @@ while True:
 
     # Calculate distance to target
     dist = sqrt((x - xt)**2 + (y - yt)**2)
-    reward -= dist/(200*60)
     # If target reached, respawn target
     if dist < 50:
         xt = randrange(200, 600)
         yt = randrange(200, 600)
         target_counter += 1
-        reward += 10
 
     # Failure conditions
-    if x < 0 or y < 0 or x > WIDTH or y > HEIGHT or time > time_limit:
-        reward -= 200
+    if dist > 1000 or time > time_limit:
         pygame.quit()
 
-    screen.blit(target, (xt - int(target.get_width()/2),
-                yt - int(target.get_height()/2)))
-    player_copy = pygame.transform.rotate(player, a)
+    target_sprite = target[int(step*target_speed)%len(target)]
+    screen.blit(target_sprite, (xt - int(target_sprite.get_width()/2),
+                yt - int(target_sprite.get_height()/2)))
+    player_sprite = player[int(step*player_speed)%len(player)]
+    player_copy = pygame.transform.rotate(player_sprite, a)
     screen.blit(player_copy, (x - int(player_copy.get_width()/2),
                 y - int(player_copy.get_height()/2)))
 
     # Update Pygame screen
     textsurface = myfont.render(
-        'Collected: ' + str(target_counter), False, (255, 255, 255))
+        'Collected : ' + str(target_counter), True, (255, 255, 255))
     screen.blit(textsurface, (20, 20))
-    textsurface2 = myfont.render(
-        'Reward: ' + str(int(reward*10)/10), False, (255, 255, 255))
-    screen.blit(textsurface2, (20, 50))
     textsurface3 = myfont.render(
-        'Time: ' + str(int(time)), False, (255, 255, 255))
-    screen.blit(textsurface3, (20, 80))
+        'Time : ' + str(int(time)) + "/" + str(int(time_limit)), True, (255, 255, 255))
+    screen.blit(textsurface3, (20, 60))
 
     pygame.display.update()
     FramePerSec.tick(FPS)
