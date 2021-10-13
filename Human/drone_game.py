@@ -138,7 +138,7 @@ while True:
         'Collected : ' + str(target_counter), True, (255, 255, 255))
     screen.blit(textsurface, (20, 20))
     textsurface3 = myfont.render(
-        'Time : ' + str(int(time)) + "/" + str(int(time_limit)), True, (255, 255, 255))
+        'Time : ' + str(int(time_limit - time)), True, (255, 255, 255))
     screen.blit(textsurface3, (20, 60))
 
     pygame.display.update()
