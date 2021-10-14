@@ -123,7 +123,7 @@ while True:
 
     # Failure conditions
     if dist > 1000 or time > time_limit:
-        pygame.quit()
+        break
 
     target_sprite = target[int(step*target_speed)%len(target)]
     screen.blit(target_sprite, (xt - int(target_sprite.get_width()/2),
@@ -143,3 +143,5 @@ while True:
 
     pygame.display.update()
     FramePerSec.tick(FPS)
+
+print("Score : " + str(target_counter))

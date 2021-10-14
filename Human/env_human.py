@@ -37,10 +37,10 @@ FramePerSec = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-player = pygame.image.load(os.path.join("media/drone.png"))
+player = pygame.image.load(os.path.join("assets/sprites/drone_old.png"))
 player.convert()
 
-target = pygame.image.load(os.path.join("media/target.png"))
+target = pygame.image.load(os.path.join("assets/sprites/target_old.png"))
 target.convert()
 
 pygame.font.init()

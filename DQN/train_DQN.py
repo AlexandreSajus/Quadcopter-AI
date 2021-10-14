@@ -59,7 +59,7 @@ config = {
     'test_episodes': 5,
 
     'load_model': True,
-    'load_path': "models/DQN/models10/kid01gen15.h5",
+    'load_path': "models/DQN/models13/kid01gen28.h5",
     'save_path': "models/DQN/models9/newborn01gen"
 }
 
