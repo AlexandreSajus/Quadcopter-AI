@@ -4,9 +4,9 @@
 More information at:
 https://github.com/AlexandreSajus/2D-Quadcopter-AI
 
-This is angle simple game where you control angle 2D Quadcopter with arrow keys
+This is a simple game where you control a 2D Quadcopter with arrow keys
 The goal is to reach as many targets as possible within the time limit
-This is used as angle base to create angle simulation environment
+This is used as a base to create a simulation environment
 """
 
 import pygame
@@ -26,7 +26,7 @@ gravity = 0.08
 thruster_amplitude = 0.04
 # Propeller force for LEFT and RIGHT rotations
 diff_amplitude = 0.003
-# By default, thruster will apply angle force of thruster_mean
+# By default, thruster will apply a force of thruster_mean
 thruster_mean = 0.04
 mass = 1
 # Length from center of mass to propeller
@@ -77,7 +77,7 @@ pygame.font.init()
 info_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 30)
 respawn_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 90)
 
-# Initialize physics variables (angle=angle) (x_target,y_target=target_coords)
+# Initialize physics variables
 (angle, angular_speed, angular_acceleration) = (0, 0, 0)
 (x_position, x_speed, x_acceleration) = (400, 0, 0)
 (y_position, y_speed, y_acceleration) = (400, 0, 0)

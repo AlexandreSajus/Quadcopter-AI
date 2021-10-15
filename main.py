@@ -4,9 +4,8 @@
 More information at:
 https://github.com/AlexandreSajus/2D-Quadcopter-AI
 
-This is angle simple game where you control angle 2D Quadcopter with arrow keys
-The goal is to reach as many targets as possible within the time limit
-You play against other agents
+This is the main game where you can compete with AI agents
+Collect as many balloons within the time limit
 """
 
 import pygame
@@ -14,7 +13,7 @@ import os
 from pygame.locals import *
 from math import sin, cos, pi, sqrt
 from random import randrange
-from player import HumanPlayer, PIDPlayer
+from player import HumanPlayer, PIDPlayer, DQNPlayer
 
 # Game constants
 FPS = 60
@@ -76,9 +75,24 @@ sun.set_alpha(124)
 # Loading fonts
 pygame.font.init()
 name_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 20)
+name_hud_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 15)
 time_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 30)
-collected_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 20)
-respawn_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 90)
+score_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 20)
+respawn_timer_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 90)
+respawning_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 15)
+
+# Function to display info about a player
+def display_info(position):
+    name_text = name_font.render(
+        player.name, True, (255, 255, 255))
+    screen.blit(name_text, (position, 20))
+    target_text = score_font.render(
+        'Score : ' + str(player.target_counter), True, (255, 255, 255))
+    screen.blit(target_text, (position, 45))
+    if player.dead == True:
+        respawning_text = respawning_font.render(
+            'Respawning...', True, (255, 255, 255))
+        screen.blit(respawning_text, (position, 70))
 
 # Initialize game variables
 time = 0
@@ -86,8 +100,9 @@ step = 0
 time_limit = 30
 respawn_timer_max = 3
 
-players = [HumanPlayer(), PIDPlayer()]
+players = [HumanPlayer(), PIDPlayer(), DQNPlayer()]
 
+# Generate 100 targets
 targets = []
 for i in range(100):
     targets.append((randrange(200, 600),randrange(200, 600)))
@@ -114,6 +129,7 @@ while True:
     time += 1/60
     step += 1
 
+    # For each player
     for player_index, player in enumerate(players):
         if player.dead == False:
             # Initialize accelerations
@@ -158,7 +174,7 @@ while True:
         else:
             # Display respawn timer
             if player.name == "Human":
-                respawn_text = respawn_font.render(
+                respawn_text = respawn_timer_font.render(
                     str(int(player.respawn_timer)+1), True, (255, 255, 255))
                 respawn_text.set_alpha(124)
                 screen.blit(respawn_text, (WIDTH/2 - respawn_text.get_width() /
@@ -187,24 +203,23 @@ while True:
         screen.blit(player_copy, (player.x_position - int(player_copy.get_width()/2),
                     player.y_position - int(player_copy.get_height()/2)))
         
+        # Display player name
+        name_hud_text = name_hud_font.render(
+            player.name, True, (255, 255, 255))
+        screen.blit(name_hud_text, (player.x_position - int(name_hud_text.get_width()/2), player.y_position - 30 - int(name_hud_text.get_height()/2)))
+        
+        # Display player info
         if player_index == 0:
-            name_text = name_font.render(
-                player.name, True, (255, 255, 255))
-            screen.blit(name_text, (20, 20))
-            target_target = collected_font.render(
-                'Collected : ' + str(player.target_counter), True, (255, 255, 255))
-            screen.blit(target_target, (20, 45))
-        if player_index == 1:
-            name_text = name_font.render(
-                player.name, True, (255, 255, 255))
-            screen.blit(name_text, (170, 20))
-            target_target = collected_font.render(
-                'Collected : ' + str(player.target_counter), True, (255, 255, 255))
-            screen.blit(target_target, (170, 45))
+            display_info(20)
+        elif player_index == 1:
+            display_info(130)
+        elif player_index == 2:
+            display_info(240)
 
         time_text = time_font.render(
             'Time : ' + str(int(time_limit - time)), True, (255, 255, 255))
         screen.blit(time_text, (670, 30))
+
     # Ending conditions
     if time > time_limit:
         break
@@ -212,6 +227,14 @@ while True:
     pygame.display.update()
     FramePerSec.tick(FPS)
 
+# Print scores and who won
 print("")
+scores = []
 for player in players:
     print(player.name + " collected : " + str(player.target_counter))
+    scores.append(player.target_counter)
+import numpy as np
+winner = players[np.argmax(scores)].name
+
+print("")
+print("Winner is : " + winner + " !")
