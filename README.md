@@ -8,10 +8,11 @@ The full scope of this project is to benchmark different ways to control a quadc
 * **GenPID**: PID Tuning using genetic algorithms
 * **RLPID**: using Reinforcement Learning (DDPG) to set the PID target in real time
 
-Here is an example of a trained DQN agent following a target:
+Here is the main game where an expert highly trained human player (me...) gets destroyed by a PID agent (and there's also a DUMB DQN AGENT THAT NEVER LEARNS)
 
-![](media/DQN_follow.gif)
+![](media/main_game.gif)
 
-And here is an example of a much more confident PID agent following a target:
+## Setup
 
-![](media/PID_follow.gif)
+* Install requirements.txt
+* Run main.py
