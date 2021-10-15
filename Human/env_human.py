@@ -139,4 +139,4 @@ while True:
     pygame.display.update()
     FramePerSec.tick(FPS)
 
-print("Reward: " + str(reward) )
+print("Reward: " + str(reward))
