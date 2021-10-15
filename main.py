@@ -8,6 +8,7 @@ This is the main game where you can compete with AI agents
 Collect as many balloons within the time limit
 """
 
+import numpy as np
 import pygame
 import os
 from pygame.locals import *
@@ -82,6 +83,8 @@ respawn_timer_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 90)
 respawning_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 15)
 
 # Function to display info about a player
+
+
 def display_info(position):
     name_text = name_font.render(
         player.name, True, (255, 255, 255))
@@ -94,6 +97,7 @@ def display_info(position):
             'Respawning...', True, (255, 255, 255))
         screen.blit(respawning_text, (position, 70))
 
+
 # Initialize game variables
 time = 0
 step = 0
@@ -105,7 +109,7 @@ players = [HumanPlayer(), PIDPlayer(), DQNPlayer()]
 # Generate 100 targets
 targets = []
 for i in range(100):
-    targets.append((randrange(200, 600),randrange(200, 600)))
+    targets.append((randrange(200, 600), randrange(200, 600)))
 
 # Game loop
 while True:
@@ -192,22 +196,25 @@ while True:
                  player.y_acceleration) = (400, 0, 0)
 
         # Display target and player
-        target_sprite = target_animation[int(step*target_animation_speed) % len(target_animation)]
+        target_sprite = target_animation[int(
+            step*target_animation_speed) % len(target_animation)]
         target_sprite.set_alpha(player.alpha)
         screen.blit(target_sprite, (targets[player.target_counter][0] - int(target_sprite.get_width()/2),
                     targets[player.target_counter][1] - int(target_sprite.get_height()/2)))
 
-        player_sprite = player_animation[int(step*player_animation_speed) % len(player_animation)]
+        player_sprite = player_animation[int(
+            step*player_animation_speed) % len(player_animation)]
         player_copy = pygame.transform.rotate(player_sprite, player.angle)
         player_copy.set_alpha(player.alpha)
         screen.blit(player_copy, (player.x_position - int(player_copy.get_width()/2),
                     player.y_position - int(player_copy.get_height()/2)))
-        
+
         # Display player name
         name_hud_text = name_hud_font.render(
             player.name, True, (255, 255, 255))
-        screen.blit(name_hud_text, (player.x_position - int(name_hud_text.get_width()/2), player.y_position - 30 - int(name_hud_text.get_height()/2)))
-        
+        screen.blit(name_hud_text, (player.x_position - int(name_hud_text.get_width()/2),
+                    player.y_position - 30 - int(name_hud_text.get_height()/2)))
+
         # Display player info
         if player_index == 0:
             display_info(20)
@@ -233,7 +240,6 @@ scores = []
 for player in players:
     print(player.name + " collected : " + str(player.target_counter))
     scores.append(player.target_counter)
-import numpy as np
 winner = players[np.argmax(scores)].name
 
 print("")

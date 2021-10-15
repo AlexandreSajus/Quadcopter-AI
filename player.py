@@ -11,6 +11,7 @@ import pygame
 from pygame.locals import *
 import numpy as np
 
+
 class Player():
     def __init__(self):
         self.thruster_mean = 0.04
@@ -23,12 +24,13 @@ class Player():
         self.dead = False
         self.respawn_timer = 3
 
+
 class HumanPlayer(Player):
     def __init__(self):
         self.name = "Human"
         self.alpha = 255
         super().__init__()
-    
+
     def act(self, obs):
         thruster_left = self.thruster_mean
         thruster_right = self.thruster_mean
@@ -45,6 +47,7 @@ class HumanPlayer(Player):
             thruster_right -= self.diff_amplitude
         return thruster_left, thruster_right
 
+
 class PIDPlayer(Player):
     def __init__(self):
         self.name = "PID"
@@ -55,12 +58,12 @@ class PIDPlayer(Player):
         self.diff_amplitude = 0.003
 
         self.dt = 1/60
-        self.xPID = PID(0.2,0,0.2,25,-25)
-        self.aPID = PID(0.02,0,0.01,1,-1)
+        self.xPID = PID(0.2, 0, 0.2, 25, -25)
+        self.aPID = PID(0.02, 0, 0.01, 1, -1)
 
-        self.yPID = PID(2.5,0,1.5,100,-100)
-        self.ydPID = PID(1,0,0,1,-1)
-    
+        self.yPID = PID(2.5, 0, 1.5, 100, -100)
+        self.ydPID = PID(1, 0, 0, 1, -1)
+
     def act(self, obs):
         thruster_left = self.thruster_mean
         thruster_right = self.thruster_mean
@@ -83,12 +86,13 @@ class PIDPlayer(Player):
 
         return thruster_left, thruster_right
 
+
 class HumanPlayer(Player):
     def __init__(self):
         self.name = "Human"
         self.alpha = 255
         super().__init__()
-    
+
     def act(self, obs):
         thruster_left = self.thruster_mean
         thruster_right = self.thruster_mean
@@ -105,6 +109,7 @@ class HumanPlayer(Player):
             thruster_right -= self.diff_amplitude
         return thruster_left, thruster_right
 
+
 class DQNPlayer(Player):
     def __init__(self):
         self.name = "DQN"
@@ -115,7 +120,6 @@ class DQNPlayer(Player):
         self.action_value = tf.keras.models.load_model(
             self.path, custom_objects={'tf': tf})
 
-    
     def act(self, obs):
         action = np.argmax(self.action_value(np.asarray([obs])))
 
