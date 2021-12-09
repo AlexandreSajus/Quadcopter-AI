@@ -14,7 +14,6 @@ from pygame.locals import *
 from math import sin, cos, pi, sqrt, atan2
 from random import randrange
 
-from pygame.math import disable_swizzling
 from player import PIDPlayer
 
 """
@@ -31,23 +30,28 @@ step = 0
 snowglobe_radius = 350
 snowglobe_edge = 20
 # radius of the snow particles
-(snow_min_radius, snow_max_radius) = (2, 8)
+(snow_min_radius, snow_max_radius) = (3, 9)
 # number of snow particles
-n_particles = 2000
+n_particles = 1800
 # factor to define collision player-snowglobe
 player_collision_margin = 0.9
 # factor to define collision player-snow
 particle_collision_margin = 0.95
 # drag coefficient for snow
-drag = 0.2
+drag = 0.02
+# gravity reduction for snow
+gravity_reduction = 0.2
 # snow-drone interaction force
-interaction_force = 0.3
+interaction_force_x = 0.1
+interaction_force_y = 0.08
 # snow-drone interaction distance
-interaction_distance = 200
+interaction_distance = 150
 # snow-drone interaction cone angle
 interaction_angle = 30
 # random snow speed
-random_snow_speed = 0.4
+random_snow_speed = 0.1
+# snow collision drag
+collision_drag = 0.3
 
 
 """
@@ -131,20 +135,22 @@ class SnowParticle:
         self.radius = radius
 
 
-# Create snow particles
-snow_particles = []
-for i in range(0, n_particles):
-    while True:
-        x = randrange(0, WIDTH)
-        y = randrange(0, HEIGHT)
-        if sqrt((x - WIDTH / 2) ** 2 + (y - HEIGHT / 2) ** 2) < snowglobe_radius:
-            break
-    r = randrange(snow_min_radius, snow_max_radius)
-    snow_particles.append(SnowParticle(x, y, r))
-
 """
 Utils
 """
+
+
+def create_snow_particles(n_particles):
+    snow_particles = []
+    for _ in range(0, n_particles):
+        while True:
+            x = randrange(0, WIDTH)
+            y = randrange(0, HEIGHT)
+            if sqrt((x - WIDTH / 2) ** 2 + (y - HEIGHT / 2) ** 2) < snowglobe_radius:
+                break
+        r = randrange(snow_min_radius, snow_max_radius)
+        snow_particles.append(SnowParticle(x, y, r))
+    return snow_particles
 
 
 def convert_to_circular(x, y, x_pos, y_pos):
@@ -173,11 +179,18 @@ def convert_to_cartesian(r, theta, x_pos, y_pos):
     return x, y
 
 
+snow_particles = create_snow_particles(n_particles)
+
+
 # Game loop
 while True:
     pygame.event.get()
 
     step += 1
+
+    # If spacebar is pressed, reset snow particles
+    if pygame.key.get_pressed()[pygame.K_SPACE]:
+        snow_particles = create_snow_particles(n_particles)
 
     """
     Background
@@ -285,7 +298,9 @@ while True:
     for snow_particle in snow_particles:
         # Accelerations
         snow_particle.x_acceleration = 0 - drag * snow_particle.x_speed
-        snow_particle.y_acceleration = gravity - drag * snow_particle.y_speed
+        snow_particle.y_acceleration = (
+            gravity * gravity_reduction - drag * snow_particle.y_speed
+        )
 
         # Drone interaction
         distance_to_player = sqrt(
@@ -302,24 +317,24 @@ while True:
             # If snow below the player, snow is attracted to the player
             if interaction_angle < angle_to_player < 180 - interaction_angle:
                 snow_particle.x_acceleration -= (
-                    interaction_force
+                    interaction_force_x
                     * (snow_particle.x_position - player.x_position)
                     / distance_to_player
                 )
                 snow_particle.y_acceleration -= (
-                    interaction_force
+                    interaction_force_y
                     * (snow_particle.y_position - player.y_position)
                     / distance_to_player
                 )
             # If snow above the player, snow is repelled from the player
             elif -interaction_angle > angle_to_player > -180 + interaction_angle:
                 snow_particle.x_acceleration += (
-                    interaction_force
+                    interaction_force_x
                     * (snow_particle.x_position - player.x_position)
                     / distance_to_player
                 )
                 snow_particle.y_acceleration += (
-                    interaction_force
+                    interaction_force_y
                     * (snow_particle.y_position - player.y_position)
                     / distance_to_player
                 )
@@ -348,7 +363,8 @@ while True:
             distance_to_center > snowglobe_radius * particle_collision_margin
             and r_speed > 0
         ):
-            r_speed = -r_speed
+            r_speed = -r_speed * collision_drag
+            theta_speed = theta_speed * collision_drag
             x_speed, y_speed = convert_to_cartesian(
                 r_speed, theta_speed, snow_particle.x_position, snow_particle.y_position
             )
