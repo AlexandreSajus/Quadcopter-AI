@@ -80,6 +80,9 @@ FramePerSec = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+# Title the window
+pygame.display.set_caption("Schneekugel")
+
 # Loading player and target sprites
 player_width = 80
 player_animation_speed = 0.3
