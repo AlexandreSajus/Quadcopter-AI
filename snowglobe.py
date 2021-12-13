@@ -184,7 +184,12 @@ snow_particles = create_snow_particles(n_particles)
 
 # Game loop
 while True:
-    pygame.event.get()
+
+    # Quit if user closes window
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit()
 
     step += 1
 
