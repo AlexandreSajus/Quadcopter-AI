@@ -10,6 +10,8 @@ This is where the players for the main game are defined
 import pygame
 from pygame.locals import *
 import numpy as np
+import tensorflow as tf
+from quadai.PID.controller_PID import PID
 
 
 class Player:
@@ -53,8 +55,6 @@ class PIDPlayer(Player):
         self.name = "PID"
         self.alpha = 50
         super().__init__()
-        # Import PID
-        from quadai.PID import PID
 
         self.thruster_amplitude = 0.04
         self.diff_amplitude = 0.003
@@ -118,7 +118,6 @@ class DQNPlayer(Player):
         self.alpha = 50
         self.path = "models/DQN/models9/elite_newborn.h5"
         super().__init__()
-        import tensorflow as tf
 
         self.action_value = tf.keras.models.load_model(
             self.path, custom_objects={"tf": tf}

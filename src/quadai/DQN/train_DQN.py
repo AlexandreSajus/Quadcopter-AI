@@ -10,8 +10,8 @@ Just modify the config variable and run
 
 import learnrl as rl
 import tensorflow as tf
-from DQN.env_DQN_3 import droneEnv
-from DQN.agent_DQN import DQNAgent, Memory, EpsGreedy, QLearning, ScoreCallback
+from quadai.DQN.env_DQN import droneEnv
+from quadai.DQN.agent_DQN import DQNAgent, Memory, EpsGreedy, QLearning, ScoreCallback
 
 kl = tf.keras.layers
 

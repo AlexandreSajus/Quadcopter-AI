@@ -6,6 +6,7 @@ https://github.com/AlexandreSajus/2D-Quadcopter-AI
 
 This is a gym environment based on drone_game (see drone_game.py for details)
 It is to be used with a DQN agent
+The goal is to reach randomly positoned targets
 """
 
 import numpy as np
@@ -144,7 +145,9 @@ class droneEnv(gym.Env):
 
             if dist < 50:
                 # Reward if close to target
-                self.reward += 10 / 60
+                self.xt = randrange(200, 600)
+                self.yt = randrange(200, 600)
+                self.reward += 50
 
             # If out of time
             if self.time > self.time_limit:

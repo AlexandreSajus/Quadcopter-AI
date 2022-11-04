@@ -7,7 +7,7 @@ https://github.com/AlexandreSajus/2D-Quadcopter-AI
 This is a helpful way to test env_DQN
 """
 
-from DQN.env_DQN import droneEnv
+from quadai.DQN.env_DQN import droneEnv
 
 env = droneEnv(True, False)
 
