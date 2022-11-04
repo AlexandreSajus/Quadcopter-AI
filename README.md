@@ -24,22 +24,29 @@ I added another game mode where the drone follows the mouse to move snow around 
 
 Make sure you have Python installed on your computer. Then, in a terminal, run the following commands:
 
-**1. Install the package with pip in your terminal:**
+### **1. Install the package with pip in your terminal:**
 
 ```bash
 pip install git+https://github.com/AlexandreSajus/2D-Quadcopter-AI.git
 ```
 
-**2. Run the game:**
+### **2. Run the game:**
 
-If you want to run the balloon game:
+**If you want to run the balloon game:**
 
 ```bash
 python -m quadai balloon
 ```
 
-If you want to run the snowglobe game:
+- Control your drone using the arrow keys
+- The drone is very sensitive so tap the keys slowly
+- Reach as many balloons as you can within the time limit
+
+**If you want to run the snowglobe game:**
 
 ```bash
 python -m quadai snowglobe
 ```
+
+- Control the drone using your mouse
+- The drone's airflow will move the snow around
