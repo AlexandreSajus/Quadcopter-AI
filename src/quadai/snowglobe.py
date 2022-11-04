@@ -14,7 +14,7 @@ from pygame.locals import *
 from math import sin, cos, pi, sqrt, atan2
 from random import randrange
 
-from player import PIDPlayer
+from quadai.player import PIDPlayer
 
 """
 Game variables

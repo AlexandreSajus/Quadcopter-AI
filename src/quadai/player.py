@@ -12,7 +12,7 @@ from pygame.locals import *
 import numpy as np
 
 
-class Player():
+class Player:
     def __init__(self):
         self.thruster_mean = 0.04
         self.thruster_amplitude = 0.04
@@ -53,11 +53,13 @@ class PIDPlayer(Player):
         self.name = "PID"
         self.alpha = 50
         super().__init__()
-        from PID.controller_PID import PID
+        # Import PID
+        from quadai.PID import PID
+
         self.thruster_amplitude = 0.04
         self.diff_amplitude = 0.003
 
-        self.dt = 1/60
+        self.dt = 1 / 60
         self.xPID = PID(0.2, 0, 0.2, 25, -25)
         self.aPID = PID(0.02, 0, 0.01, 1, -1)
 
@@ -79,10 +81,10 @@ class PIDPlayer(Player):
         error_yd = ydc - yd
         action0 = self.ydPID.compute(-error_yd, self.dt)
 
-        thruster_left += action0*self.thruster_amplitude
-        thruster_right += action0*self.thruster_amplitude
-        thruster_left += action1*self.diff_amplitude
-        thruster_right -= action1*self.diff_amplitude
+        thruster_left += action0 * self.thruster_amplitude
+        thruster_right += action0 * self.thruster_amplitude
+        thruster_left += action1 * self.diff_amplitude
+        thruster_right -= action1 * self.diff_amplitude
 
         return thruster_left, thruster_right
 
@@ -117,8 +119,10 @@ class DQNPlayer(Player):
         self.path = "models/DQN/models9/elite_newborn.h5"
         super().__init__()
         import tensorflow as tf
+
         self.action_value = tf.keras.models.load_model(
-            self.path, custom_objects={'tf': tf})
+            self.path, custom_objects={"tf": tf}
+        )
 
     def act(self, obs):
         action = np.argmax(self.action_value(np.asarray([obs])))
