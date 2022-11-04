@@ -10,6 +10,7 @@ Just modify the PID values and run
 
 from PID.controller_PID import PID
 
+
 def episode(env, n_episodes, xPID_params, aPID_params, yPID_params, ydPID_params):
     xPID = PID(xPID_params)
     aPID = PID(aPID_params)
@@ -24,8 +25,8 @@ def episode(env, n_episodes, xPID_params, aPID_params, yPID_params, ydPID_params
 
         total_reward = 0
 
-        dt = 1/60
-        n_steps = 200*60
+        dt = 1 / 60
+        n_steps = 200 * 60
         for step in range(n_steps):
             [error_x, xd, error_y, yd, a, ad] = obs
 
@@ -45,4 +46,4 @@ def episode(env, n_episodes, xPID_params, aPID_params, yPID_params, ydPID_params
             if done:
                 break
 
-    return total_reward/10
+    return total_reward / 10

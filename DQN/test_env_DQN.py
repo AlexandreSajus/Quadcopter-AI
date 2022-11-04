@@ -29,7 +29,7 @@ n_steps = 20
 for step in range(n_steps):
     print("Step {}".format(step + 1))
     obs, reward, done, info = env.step(action)
-    print('obs=', obs, 'reward=', reward, 'done=', done)
+    print("obs=", obs, "reward=", reward, "done=", done)
     env.render("yes")
     if done:
         print("Done!", "reward=", reward)

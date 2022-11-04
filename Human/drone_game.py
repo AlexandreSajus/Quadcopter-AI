@@ -43,29 +43,44 @@ player_width = 80
 player_animation_speed = 0.3
 player = []
 for i in range(1, 5):
-    image = pygame.image.load(os.path.join(
-        "assets/balloon-flat-asset-pack/png/objects/drone-sprites/drone-" + str(i) + ".png"))
+    image = pygame.image.load(
+        os.path.join(
+            "assets/balloon-flat-asset-pack/png/objects/drone-sprites/drone-"
+            + str(i)
+            + ".png"
+        )
+    )
     image.convert()
-    player.append(pygame.transform.scale(
-        image, (player_width, int(player_width*0.30))))
+    player.append(
+        pygame.transform.scale(image, (player_width, int(player_width * 0.30)))
+    )
 
 target_width = 30
 target_animation_speed = 0.1
 target = []
 for i in range(1, 8):
-    image = pygame.image.load(os.path.join(
-        "assets/balloon-flat-asset-pack/png/balloon-sprites/red-plain/red-plain-" + str(i) + ".png"))
+    image = pygame.image.load(
+        os.path.join(
+            "assets/balloon-flat-asset-pack/png/balloon-sprites/red-plain/red-plain-"
+            + str(i)
+            + ".png"
+        )
+    )
     image.convert()
-    target.append(pygame.transform.scale(
-        image, (target_width, int(target_width*1.73))))
+    target.append(
+        pygame.transform.scale(image, (target_width, int(target_width * 1.73)))
+    )
 
 # Loading background sprites
-cloud1 = pygame.image.load(os.path.join(
-    "assets/balloon-flat-asset-pack/png/background-elements/cloud-1.png"))
-cloud2 = pygame.image.load(os.path.join(
-    "assets/balloon-flat-asset-pack/png/background-elements/cloud-2.png"))
-sun = pygame.image.load(os.path.join(
-    "assets/balloon-flat-asset-pack/png/background-elements/sun.png"))
+cloud1 = pygame.image.load(
+    os.path.join("assets/balloon-flat-asset-pack/png/background-elements/cloud-1.png")
+)
+cloud2 = pygame.image.load(
+    os.path.join("assets/balloon-flat-asset-pack/png/background-elements/cloud-2.png")
+)
+sun = pygame.image.load(
+    os.path.join("assets/balloon-flat-asset-pack/png/background-elements/sun.png")
+)
 cloud1.set_alpha(124)
 (x_cloud1, y_cloud1, speed_cloud1) = (150, 200, 0.3)
 cloud2.set_alpha(124)
@@ -74,8 +89,8 @@ sun.set_alpha(124)
 
 # Loading fonts
 pygame.font.init()
-info_font = pygame.font.Font('assets/fonts/Roboto-Regular.ttf', 30)
-respawn_font = pygame.font.Font('assets/fonts/Roboto-Bold.ttf', 90)
+info_font = pygame.font.Font("assets/fonts/Roboto-Regular.ttf", 30)
+respawn_font = pygame.font.Font("assets/fonts/Roboto-Bold.ttf", 90)
 
 # Initialize physics variables
 (angle, angular_speed, angular_acceleration) = (0, 0, 0)
@@ -112,7 +127,7 @@ while True:
 
     screen.blit(sun, (630, -100))
 
-    time += 1/60
+    time += 1 / 60
     step += 1
 
     if dead == False:
@@ -137,11 +152,13 @@ while True:
             thruster_right -= diff_amplitude
 
         # Calculate accelerations according to Newton's laws of motion
-        x_acceleration += -(thruster_left + thruster_right) * \
-            sin(angle*pi/180)/mass
-        y_acceleration += -(thruster_left + thruster_right) * \
-            cos(angle*pi/180)/mass
-        angular_acceleration += arm*(thruster_right - thruster_left)/mass
+        x_acceleration += (
+            -(thruster_left + thruster_right) * sin(angle * pi / 180) / mass
+        )
+        y_acceleration += (
+            -(thruster_left + thruster_right) * cos(angle * pi / 180) / mass
+        )
+        angular_acceleration += arm * (thruster_right - thruster_left) / mass
 
         # Calculate speed
         x_speed += x_acceleration
@@ -154,7 +171,7 @@ while True:
         angle += angular_speed
 
         # Calculate distance to target
-        dist = sqrt((x_position - x_target)**2 + (y_position - y_target)**2)
+        dist = sqrt((x_position - x_target) ** 2 + (y_position - y_target) ** 2)
 
         # If target reached, respawn target
         if dist < 50:
@@ -169,12 +186,18 @@ while True:
     else:
         # Display respawn timer
         respawn_text = respawn_font.render(
-            str(int(respawn_timer)+1), True, (255, 255, 255))
+            str(int(respawn_timer) + 1), True, (255, 255, 255)
+        )
         respawn_text.set_alpha(124)
-        screen.blit(respawn_text, (WIDTH/2 - respawn_text.get_width() /
-                    2, HEIGHT/2 - respawn_text.get_height()/2))
+        screen.blit(
+            respawn_text,
+            (
+                WIDTH / 2 - respawn_text.get_width() / 2,
+                HEIGHT / 2 - respawn_text.get_height() / 2,
+            ),
+        )
 
-        respawn_timer -= 1/60
+        respawn_timer -= 1 / 60
         # Respawn
         if respawn_timer < 0:
             dead = False
@@ -187,21 +210,33 @@ while True:
         break
 
     # Display target and player
-    target_sprite = target[int(step*target_animation_speed) % len(target)]
-    screen.blit(target_sprite, (x_target - int(target_sprite.get_width()/2),
-                y_target - int(target_sprite.get_height()/2)))
+    target_sprite = target[int(step * target_animation_speed) % len(target)]
+    screen.blit(
+        target_sprite,
+        (
+            x_target - int(target_sprite.get_width() / 2),
+            y_target - int(target_sprite.get_height() / 2),
+        ),
+    )
 
-    player_sprite = player[int(step*player_animation_speed) % len(player)]
+    player_sprite = player[int(step * player_animation_speed) % len(player)]
     player_copy = pygame.transform.rotate(player_sprite, angle)
-    screen.blit(player_copy, (x_position - int(player_copy.get_width()/2),
-                y_position - int(player_copy.get_height()/2)))
+    screen.blit(
+        player_copy,
+        (
+            x_position - int(player_copy.get_width() / 2),
+            y_position - int(player_copy.get_height() / 2),
+        ),
+    )
 
     # Update text
     target_target = info_font.render(
-        'Collected : ' + str(target_counter), True, (255, 255, 255))
+        "Collected : " + str(target_counter), True, (255, 255, 255)
+    )
     screen.blit(target_target, (20, 20))
     time_text = info_font.render(
-        'Time : ' + str(int(time_limit - time)), True, (255, 255, 255))
+        "Time : " + str(int(time_limit - time)), True, (255, 255, 255)
+    )
     screen.blit(time_text, (20, 60))
 
     pygame.display.update()

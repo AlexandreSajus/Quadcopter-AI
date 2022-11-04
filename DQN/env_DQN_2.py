@@ -21,7 +21,6 @@ from random import randrange
 
 
 class droneEnv(gym.Env):
-
     def __init__(self, render_every_frame, mouse_target):
         super(droneEnv, self).__init__()
 
@@ -41,7 +40,7 @@ class droneEnv(gym.Env):
         self.target.convert()
 
         pygame.font.init()
-        self.myfont = pygame.font.SysFont('Comic Sans MS', 20)
+        self.myfont = pygame.font.SysFont("Comic Sans MS", 20)
 
         # Physics constants
         self.FPS = 60
@@ -73,8 +72,7 @@ class droneEnv(gym.Env):
         # 5 actions: Nothing, Up, Down, Right, Left
         self.action_space = gym.spaces.Discrete(5)
         # 6 observations: x_to_target, x_speed, y_to_target, y_speed, angle, angle_speed
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf,
-                                            shape=(6,))
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(6,))
 
     def reset(self):
         # Reset variables
@@ -90,7 +88,9 @@ class droneEnv(gym.Env):
         self.target_counter = 0
         self.reward = 0
         self.time = 0
-        return np.array([self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]).astype(np.float32)
+        return np.array(
+            [self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]
+        ).astype(np.float32)
 
     def step(self, action):
         # Game loop
@@ -99,7 +99,7 @@ class droneEnv(gym.Env):
 
         # Act every 5 frames
         for i in range(5):
-            self.time += 1/60
+            self.time += 1 / 60
 
             if self.mouse_target == True:
                 self.xt, self.yt = pygame.mouse.get_pos()
@@ -127,11 +127,13 @@ class droneEnv(gym.Env):
                 thruster_right += self.diff_amplitude
 
             # Calculating accelerations with Newton's laws of motions
-            self.xdd += -(thruster_left + thruster_right) * \
-                sin(self.a*pi/180)/self.mass
-            self.ydd += -(thruster_left + thruster_right) * \
-                cos(self.a*pi/180)/self.mass
-            self.add += self.arm*(thruster_right - thruster_left)/self.mass
+            self.xdd += (
+                -(thruster_left + thruster_right) * sin(self.a * pi / 180) / self.mass
+            )
+            self.ydd += (
+                -(thruster_left + thruster_right) * cos(self.a * pi / 180) / self.mass
+            )
+            self.add += self.arm * (thruster_right - thruster_left) / self.mass
 
             self.xd += self.xdd
             self.yd += self.ydd
@@ -140,25 +142,25 @@ class droneEnv(gym.Env):
             self.y += self.yd
             self.a += self.ad
 
-            dist = sqrt((self.x - self.xt)**2 + (self.y - self.yt)**2)
+            dist = sqrt((self.x - self.xt) ** 2 + (self.y - self.yt) ** 2)
 
             # Reward per step survived
-            self.reward += 1/60
+            self.reward += 1 / 60
             # Penalty according to the distance to target
-            self.reward -= dist*0.5/(1000*60)
+            self.reward -= dist * 0.5 / (1000 * 60)
 
             if dist < 50:
                 self.on_target = True
                 # Reward if close to target
-                self.reward += 10/60
-            
+                self.reward += 10 / 60
+
             else:
                 self.on_target = False
                 self.hover_timer = self.hover_timer_default
-            
+
             if self.on_target == True:
                 self.hover_timer -= 1
-            
+
             if self.hover_timer < 0:
                 self.reward += 50
                 self.hover_timer = self.hover_timer_default
@@ -185,23 +187,42 @@ class droneEnv(gym.Env):
 
         info = {}
 
-        return np.array([self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]).astype(np.float32), self.reward, done, info
+        return (
+            np.array(
+                [self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]
+            ).astype(np.float32),
+            self.reward,
+            done,
+            info,
+        )
 
     def render(self, mode):
         # Pygame rendering
         pygame.event.get()
         self.screen.fill(0)
-        self.screen.blit(self.target, (self.xt - int(self.target.get_width()/2),
-                                       self.yt - int(self.target.get_height()/2)))
+        self.screen.blit(
+            self.target,
+            (
+                self.xt - int(self.target.get_width() / 2),
+                self.yt - int(self.target.get_height() / 2),
+            ),
+        )
         player_copy = pygame.transform.rotate(self.player, self.a)
-        self.screen.blit(player_copy, (self.x - int(player_copy.get_width()/2),
-                                       self.y - int(player_copy.get_height()/2)))
+        self.screen.blit(
+            player_copy,
+            (
+                self.x - int(player_copy.get_width() / 2),
+                self.y - int(player_copy.get_height() / 2),
+            ),
+        )
 
         textsurface = self.myfont.render(
-            'Collected: ' + str(self.target_counter), False, (255, 255, 255))
+            "Collected: " + str(self.target_counter), False, (255, 255, 255)
+        )
         self.screen.blit(textsurface, (20, 20))
         textsurface3 = self.myfont.render(
-            'Time: ' + str(int(self.time)), False, (255, 255, 255))
+            "Time: " + str(int(self.time)), False, (255, 255, 255)
+        )
         self.screen.blit(textsurface3, (20, 50))
 
         pygame.display.update()

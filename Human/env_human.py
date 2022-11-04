@@ -44,7 +44,7 @@ target = pygame.image.load(os.path.join("assets/sprites/target_old.png"))
 target.convert()
 
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 20)
+myfont = pygame.font.SysFont("Comic Sans MS", 20)
 
 # Initialize physics variables (a=angle) (xt,yt=target_coords)
 (a, ad, add) = (0, 0, 0)
@@ -64,7 +64,7 @@ while True:
     pygame.event.get()
     screen.fill(0)
 
-    time += 1/60
+    time += 1 / 60
 
     # Initialize accelerations
     xdd = 0
@@ -87,9 +87,9 @@ while True:
         thruster_right -= diff_amplitude
 
     # Calculate accelerations according to Newton's laws of motion
-    xdd += -(thruster_left + thruster_right)*sin(a*pi/180)/mass
-    ydd += -(thruster_left + thruster_right)*cos(a*pi/180)/mass
-    add += arm*(thruster_right - thruster_left)/mass
+    xdd += -(thruster_left + thruster_right) * sin(a * pi / 180) / mass
+    ydd += -(thruster_left + thruster_right) * cos(a * pi / 180) / mass
+    add += arm * (thruster_right - thruster_left) / mass
 
     # Calculate speed
     xd += xdd
@@ -102,12 +102,12 @@ while True:
     a += ad
 
     # Calculate distance to target
-    dist = sqrt((x - xt)**2 + (y - yt)**2)
-    reward += 1/60
-    reward -= dist*0.5/(1000*60)
+    dist = sqrt((x - xt) ** 2 + (y - yt) ** 2)
+    reward += 1 / 60
+    reward -= dist * 0.5 / (1000 * 60)
     # If target reached, respawn target
     if dist < 50:
-        reward += 10/60
+        reward += 10 / 60
 
     # If out of time
     if time > time_limit:
@@ -122,18 +122,21 @@ while True:
         pygame.quit()
         break
 
-    screen.blit(target, (xt - int(target.get_width()/2),
-                yt - int(target.get_height()/2)))
+    screen.blit(
+        target, (xt - int(target.get_width() / 2), yt - int(target.get_height() / 2))
+    )
     player_copy = pygame.transform.rotate(player, a)
-    screen.blit(player_copy, (x - int(player_copy.get_width()/2),
-                y - int(player_copy.get_height()/2)))
+    screen.blit(
+        player_copy,
+        (x - int(player_copy.get_width() / 2), y - int(player_copy.get_height() / 2)),
+    )
 
     # Update Pygame screen
     textsurface2 = myfont.render(
-        'Reward: ' + str(int(reward*10)/10), False, (255, 255, 255))
+        "Reward: " + str(int(reward * 10) / 10), False, (255, 255, 255)
+    )
     screen.blit(textsurface2, (20, 50))
-    textsurface3 = myfont.render(
-        'Time: ' + str(int(time)), False, (255, 255, 255))
+    textsurface3 = myfont.render("Time: " + str(int(time)), False, (255, 255, 255))
     screen.blit(textsurface3, (20, 80))
 
     pygame.display.update()

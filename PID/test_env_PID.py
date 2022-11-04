@@ -24,12 +24,12 @@ print("Action space sample:")
 print(env.action_space.sample())
 
 # Choose an action to execute n_steps times
-action = [0,0.003]
+action = [0, 0.003]
 n_steps = 1000
 for step in range(n_steps):
     print("Step {}".format(step + 1))
     obs, reward, done, info = env.step(action)
-    print('obs=', obs, 'reward=', reward, 'done=', done)
+    print("obs=", obs, "reward=", reward, "done=", done)
     env.render("yes")
     if done:
         print("Done!", "reward=", reward)

@@ -13,16 +13,16 @@ from PID.controller_PID import PID
 
 env = droneEnv(render_every_frame=True, mouse_target=False)
 
-xPID = PID(0.2,0,0.2,25,-25)
-aPID = PID(0.02,0,0.01,1,-1)
+xPID = PID(0.2, 0, 0.2, 25, -25)
+aPID = PID(0.02, 0, 0.01, 1, -1)
 
-yPID = PID(2.5,0,1.5,100,-100)
-ydPID = PID(1,0,0,1,-1)
+yPID = PID(2.5, 0, 1.5, 100, -100)
+ydPID = PID(1, 0, 0, 1, -1)
 
 obs = env.reset()
 env.render("yes")
 
-dt = 1/60
+dt = 1 / 60
 n_steps = 100000
 for step in range(n_steps):
     [error_x, xd, error_y, yd, a, ad] = obs
