@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # ML
-models
 logs
 wandb
 videos
