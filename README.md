@@ -20,7 +20,11 @@ I added another game mode where the drone follows the mouse to move snow around 
   <img src="media/snowglobe.gif" alt="Snowglobe" width="50%"/>
 </p>
 
-## **Installation**
+## **Installation** as a Windows Executable
+
+I have published the project as a game on itch.io here: https://alexandresajus.itch.io/2d-quadcopter
+
+## **Installation** in Python
 
 Make sure you have Python installed on your computer. Then, in a terminal, run the following commands:
 
