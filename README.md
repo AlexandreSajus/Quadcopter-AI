@@ -1,24 +1,26 @@
-# 2D-Quadcopter-AI
+# **2D Quadcopter AI**
 
 Controlling a 2D Quadcopter with rigidbody physics using Control Theory and Reinforcement Learning
 
-The full scope of this project is to benchmark different ways to control a quadcopter in a 2D simulated environment:
+The currently implemented algorithms are:
 
 - **Human**: discrete control of the propellers with the arrow keys
-- **DQN**: fully emergent behavior, no imitation learning, same controls as human
-- **PID**: cascade control with multiple PIDs
-- **GenPID**: PID Tuning using genetic algorithms (not yet implemented)
-- **RLPID**: using Reinforcement Learning (DDPG) to set the PID target in real time (not yet implemented)
+- **DQN**: DQN is a reinforcement learning agent that trained itself on multiple episodes of the game, by testing different actions and learning from the rewards it gets.
+- **PID**: PID is a controller in control theory that uses the error between the drone position and the target position to calculate the force to apply to the drone.
 
-Here is the main game where an expert highly trained human player (me...) gets destroyed by a PID agent (and there's also a DUMB DQN AGENT THAT NEVER LEARNS)
+The main game consists of controlling the drone to hit as many balloons within a time limit. Getting out of bounds puts the drone on a respawn timer
 
-![](media/main_game.gif)
+<p align="center">
+  <img src="media/main_game.gif" alt="Main Game" width="50%"/>
+</p>
 
-Oh also I got bored so I made a christmas-themed mod in snowglobe.py:
+I added another game mode where the human just controls the drone with the arrow keys to move snow particles in a snowglobe.
 
-![](media/snowglobe.gif)
+<p align="center">
+  <img src="media/snowglobe.gif" alt="Snowglobe" width="50%"/>
+</p>
 
-## Setup
+## Installation
 
 - Install requirements.txt
-- Run main.py
+- Run main.py or snowglobe.py
