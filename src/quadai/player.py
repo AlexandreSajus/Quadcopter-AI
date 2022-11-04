@@ -121,7 +121,7 @@ class DQNPlayer(Player):
         self.name = "DQN"
         self.alpha = 50
         model_path = "models/elite_newborn.h5"
-        self.path = os.path.join(os.path.dirname(__file__), model_path)
+        self.path = "models/elite_newborn.h5"
         super().__init__()
 
         self.action_value = tf.keras.models.load_model(

@@ -10,6 +10,7 @@ Collect as many balloons within the time limit
 import os
 from random import randrange
 from math import sin, cos, pi, sqrt
+from time import sleep
 
 import numpy as np
 import pygame
@@ -21,7 +22,7 @@ def correct_path(current_path):
     """
     This function is used to get the correct path to the assets folder
     """
-    return os.path.join(os.path.dirname(__file__), current_path)
+    return current_path
 
 
 def balloon():
@@ -49,6 +50,7 @@ def balloon():
     FramePerSec = pygame.time.Clock()
 
     pygame.init()
+    pygame.display.set_caption("Quadcopter AI - Balloons")
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
     # Loading player and target sprites
@@ -159,7 +161,11 @@ def balloon():
 
     # Game loop
     while True:
-        pygame.event.get()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return 0
 
         # Display background
         screen.fill((131, 176, 181))
@@ -345,3 +351,5 @@ def balloon():
 
     print("")
     print("Winner is : " + winner + " !")
+    pygame.quit()
+    return 0

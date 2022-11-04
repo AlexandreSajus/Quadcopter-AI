@@ -21,7 +21,7 @@ def correct_path(current_path):
     """
     This function is used to get the correct path to the assets folder
     """
-    return os.path.join(os.path.dirname(__file__), current_path)
+    return current_path
 
 
 def snowglobe():
@@ -75,6 +75,7 @@ def snowglobe():
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Quadcopter AI - Snowglobe")
 
     # Title the window
     pygame.display.set_caption("Schneekugel")
@@ -191,9 +192,9 @@ def snowglobe():
 
         # Quit if user closes window
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
-                exit()
+                return 0
 
         step += 1
 
