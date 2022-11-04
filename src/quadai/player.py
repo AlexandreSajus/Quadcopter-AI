@@ -120,7 +120,7 @@ class DQNPlayer(Player):
     def __init__(self):
         self.name = "DQN"
         self.alpha = 50
-        model_path = "models/DQN/models9/elite_newborn.h5"
+        model_path = "models/elite_newborn.h5"
         self.path = os.path.join(os.path.dirname(__file__), model_path)
         super().__init__()
 
