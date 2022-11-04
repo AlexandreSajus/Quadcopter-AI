@@ -7,10 +7,14 @@ https://github.com/AlexandreSajus/2D-Quadcopter-AI
 This is where the players for the main game are defined
 """
 
-import pygame
-from pygame.locals import *
+import os
+
 import numpy as np
 import tensorflow as tf
+
+import pygame
+from pygame.locals import *
+
 from quadai.PID.controller_PID import PID
 
 
@@ -116,7 +120,8 @@ class DQNPlayer(Player):
     def __init__(self):
         self.name = "DQN"
         self.alpha = 50
-        self.path = "models/DQN/models9/elite_newborn.h5"
+        model_path = "models/DQN/models9/elite_newborn.h5"
+        self.path = os.path.join(os.path.dirname(__file__), model_path)
         super().__init__()
 
         self.action_value = tf.keras.models.load_model(

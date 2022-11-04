@@ -17,6 +17,13 @@ from pygame.locals import *
 from quadai.player import PIDPlayer
 
 
+def correct_path(current_path):
+    """
+    This function is used to get the correct path to the assets folder
+    """
+    return os.path.join(os.path.dirname(__file__), current_path)
+
+
 def snowglobe():
     """
     Runs the snowglobe game
@@ -78,10 +85,12 @@ def snowglobe():
     player_animation = []
     for i in range(1, 5):
         image = pygame.image.load(
-            os.path.join(
-                "assets/balloon-flat-asset-pack/png/objects/drone-sprites/drone-"
-                + str(i)
-                + ".png"
+            correct_path(
+                os.path.join(
+                    "assets/balloon-flat-asset-pack/png/objects/drone-sprites/drone-"
+                    + str(i)
+                    + ".png"
+                )
             )
         )
         image.convert()
@@ -91,17 +100,25 @@ def snowglobe():
 
     # Loading background sprites
     cloud1 = pygame.image.load(
-        os.path.join(
-            "assets/balloon-flat-asset-pack/png/background-elements/cloud-1.png"
+        correct_path(
+            os.path.join(
+                "assets/balloon-flat-asset-pack/png/background-elements/cloud-1.png"
+            )
         )
     )
     cloud2 = pygame.image.load(
-        os.path.join(
-            "assets/balloon-flat-asset-pack/png/background-elements/cloud-2.png"
+        correct_path(
+            os.path.join(
+                "assets/balloon-flat-asset-pack/png/background-elements/cloud-2.png"
+            )
         )
     )
     sun = pygame.image.load(
-        os.path.join("assets/balloon-flat-asset-pack/png/background-elements/sun.png")
+        correct_path(
+            os.path.join(
+                "assets/balloon-flat-asset-pack/png/background-elements/sun.png"
+            )
+        )
     )
     cloud1.set_alpha(124)
     (x_cloud1, y_cloud1, speed_cloud1) = (150, 200, 0.3)
