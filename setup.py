@@ -9,4 +9,8 @@ def get_requirements():
     return requirements_file.readlines()
 
 
-setup(install_requires=get_requirements())
+setup(
+    install_requires=get_requirements(),
+    setup_requires=["setuptools_scm"],
+    include_package_data=True,
+)
