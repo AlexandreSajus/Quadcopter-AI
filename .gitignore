@@ -136,6 +136,7 @@ runs
 
 # Common
 temp.py
+tmp
 
 # Photoshop
 *.psd
