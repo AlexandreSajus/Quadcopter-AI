@@ -14,7 +14,7 @@ from math import sin, cos, pi, sqrt
 import numpy as np
 import pygame
 from pygame.locals import *
-from quadai.player import HumanPlayer, PIDPlayer, DQNPlayer
+from quadai.player import HumanPlayer, PIDPlayer, DQNPlayer, SACPlayer
 
 
 def correct_path(current_path):
@@ -147,10 +147,10 @@ def balloon():
     # Initialize game variables
     time = 0
     step = 0
-    time_limit = 30
+    time_limit = 100
     respawn_timer_max = 3
 
-    players = [HumanPlayer(), PIDPlayer(), DQNPlayer()]
+    players = [HumanPlayer(), PIDPlayer(), DQNPlayer(), SACPlayer()]
 
     # Generate 100 targets
     targets = []
@@ -188,16 +188,61 @@ def balloon():
                 player.angular_acceleration = 0
 
                 # Calculate propeller force in function of input
-                thruster_left, thruster_right = player.act(
-                    [
-                        targets[player.target_counter][0] - player.x_position,
-                        player.x_speed,
+                if player.name == "DQN" or player.name == "PID":
+                    thruster_left, thruster_right = player.act(
+                        [
+                            targets[player.target_counter][0] - player.x_position,
+                            player.x_speed,
+                            targets[player.target_counter][1] - player.y_position,
+                            player.y_speed,
+                            player.angle,
+                            player.angular_speed,
+                        ]
+                    )
+                elif player.name == "SAC":
+                    angle_to_up = player.angle / 180 * pi
+                    velocity = sqrt(player.x_speed**2 + player.y_speed**2)
+                    angle_velocity = player.angular_speed
+                    distance_to_target = (
+                        sqrt(
+                            (targets[player.target_counter][0] - player.x_position) ** 2
+                            + (targets[player.target_counter][1] - player.y_position)
+                            ** 2
+                        )
+                        / 500
+                    )
+                    angle_to_target = np.arctan2(
                         targets[player.target_counter][1] - player.y_position,
-                        player.y_speed,
-                        player.angle,
-                        player.angular_speed,
-                    ]
-                )
+                        targets[player.target_counter][0] - player.x_position,
+                    )
+                    # Angle between the to_target vector and the velocity vector
+                    angle_target_and_velocity = np.arctan2(
+                        targets[player.target_counter][1] - player.y_position,
+                        targets[player.target_counter][0] - player.x_position,
+                    ) - np.arctan2(player.y_speed, player.x_speed)
+                    distance_to_target = (
+                        sqrt(
+                            (targets[player.target_counter][0] - player.x_position) ** 2
+                            + (targets[player.target_counter][1] - player.y_position)
+                            ** 2
+                        )
+                        / 500
+                    )
+                    thruster_left, thruster_right = player.act(
+                        np.array(
+                            [
+                                angle_to_up,
+                                velocity,
+                                angle_velocity,
+                                distance_to_target,
+                                angle_to_target,
+                                angle_target_and_velocity,
+                                distance_to_target,
+                            ]
+                        ).astype(np.float32)
+                    )
+                else:
+                    thruster_left, thruster_right = player.act([])
 
                 # Calculate accelerations according to Newton's laws of motion
                 player.x_acceleration += (
@@ -322,6 +367,8 @@ def balloon():
                 display_info(130)
             elif player_index == 2:
                 display_info(240)
+            elif player_index == 3:
+                display_info(350)
 
             time_text = time_font.render(
                 "Time : " + str(int(time_limit - time)), True, (255, 255, 255)

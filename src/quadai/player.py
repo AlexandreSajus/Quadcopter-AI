@@ -15,6 +15,8 @@ import tensorflow as tf
 import pygame
 from pygame.locals import *
 
+from stable_baselines3 import SAC
+
 from quadai.PID.controller_PID import PID
 
 
@@ -148,4 +150,30 @@ class DQNPlayer(Player):
         elif action == 4:
             thruster_left -= self.diff_amplitude
             thruster_right += self.diff_amplitude
+        return thruster_left, thruster_right
+
+
+class SACPlayer(Player):
+    def __init__(self):
+        self.name = "SAC"
+        self.alpha = 50
+        self.thruster_amplitude = 0.04
+        self.diff_amplitude = 0.0005
+        model_path = "src/quadai/models/rl_model_3330000_steps.zip"
+        self.path = model_path
+        super().__init__()
+
+        self.action_value = SAC.load(self.path)
+
+    def act(self, obs):
+        action, _ = self.action_value.predict(obs)
+        (action0, action1) = (action[0], action[1])
+
+        thruster_left = self.thruster_mean
+        thruster_right = self.thruster_mean
+
+        thruster_left += action0 * self.thruster_amplitude
+        thruster_right += action0 * self.thruster_amplitude
+        thruster_left += action1 * self.diff_amplitude
+        thruster_right -= action1 * self.diff_amplitude
         return thruster_left, thruster_right
