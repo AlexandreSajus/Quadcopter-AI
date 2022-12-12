@@ -37,7 +37,7 @@ pip install git+https://github.com/AlexandreSajus/2D-Quadcopter-AI.git
 **If you want to run the balloon game:**
 
 ```bash
-python -m quadai balloon
+python -m quadai
 ```
 
 - Control your drone by tapping the arrow keys

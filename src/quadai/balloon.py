@@ -14,7 +14,7 @@ from math import sin, cos, pi, sqrt
 import numpy as np
 import pygame
 from pygame.locals import *
-from quadai.player import HumanPlayer, PIDPlayer, DQNPlayer, SACPlayer
+from quadai.player import HumanPlayer, PIDPlayer, SACPlayer
 
 
 def correct_path(current_path):
