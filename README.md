@@ -29,7 +29,7 @@ Make sure you have Python installed on your computer. Then, in a terminal, run t
 ### **1. Install the package with pip in your terminal:**
 
 ```bash
-pip install git+https://github.com/AlexandreSajus/2D-Quadcopter-AI.git
+pip install git+https://github.com/AlexandreSajus/Quadcopter-AI.git
 ```
 
 ### **2. Run the game:**
