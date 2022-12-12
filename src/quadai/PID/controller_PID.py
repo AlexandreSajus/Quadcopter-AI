@@ -2,7 +2,7 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
 Simple PID Controller
 Learned from this tutorial on Youtube:

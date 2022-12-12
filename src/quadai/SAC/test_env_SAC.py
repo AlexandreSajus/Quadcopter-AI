@@ -2,9 +2,9 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
-This is a helpful way to test env_DQN
+This is a helpful way to test env_SAC
 """
 
 import numpy as np

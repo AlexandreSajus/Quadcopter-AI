@@ -1,16 +1,12 @@
 """
-Train an SAC agent using sb3 on the droneEnv environment
-
-Use RL zoo hyperparameters
+Train a DQN agent using sb3 on the droneEnv environment
 """
 
 import os
-import gym
-import numpy as np
-import torch as th
+
 from stable_baselines3 import DQN
 from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
+from stable_baselines3.common.callbacks import CheckpointCallback
 import wandb
 from wandb.integration.sb3 import WandbCallback
 

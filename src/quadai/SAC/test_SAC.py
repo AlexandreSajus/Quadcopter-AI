@@ -10,7 +10,7 @@ from stable_baselines3 import SAC
 
 from env_SAC import droneEnv
 
-MODEL_PATH = "tmp/rl_model_3330000_steps.zip"
+MODEL_PATH = "models/sac_model_v2_5000000_steps.zip"
 
 # Create and wrap the environment
 env = droneEnv(True, False)

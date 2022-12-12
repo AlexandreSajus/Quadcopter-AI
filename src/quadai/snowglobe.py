@@ -2,10 +2,11 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
 Christmas themed mod to the main game
 """
+
 import os
 import random
 from random import randrange
@@ -14,7 +15,7 @@ from math import sin, cos, pi, sqrt, atan2
 import pygame
 from pygame.locals import *
 
-from quadai.player import PIDPlayer
+from player import PIDPlayer
 
 
 def correct_path(current_path):

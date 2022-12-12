@@ -2,7 +2,7 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
 This is a simple game where you control a 2D Quadcopter with arrow keys
 The goal is to reach as many targets as possible within the time limit

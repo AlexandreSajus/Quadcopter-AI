@@ -2,9 +2,9 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
-This is a gym environment based on drone_game (see drone_game.py for details)
+This is a gym environment based on drone_game (see Human/drone_game.py for details)
 It is to be used with a DQN agent
 The goal is to reach randomly positoned targets
 """

@@ -1,1 +1,0 @@
-"""Image and font assets."""

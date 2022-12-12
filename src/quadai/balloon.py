@@ -2,7 +2,7 @@
 2D Quadcopter AI by Alexandre Sajus
 
 More information at:
-https://github.com/AlexandreSajus/2D-Quadcopter-AI
+https://github.com/AlexandreSajus/Quadcopter-AI
 
 This is the main game where you can compete with AI agents
 Collect as many balloons within the time limit
