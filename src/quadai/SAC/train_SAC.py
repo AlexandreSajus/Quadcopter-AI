@@ -35,7 +35,7 @@ model = SAC("MlpPolicy", env, verbose=1, tensorboard_log=log_dir)
 
 # Create checkpoint callback
 checkpoint_callback = CheckpointCallback(
-    save_freq=10000, save_path=log_dir, name_prefix="rl_model"
+    save_freq=100000, save_path=log_dir, name_prefix="rl_model_v2"
 )
 
 # Train the agent
@@ -44,9 +44,9 @@ model.learn(
     callback=[
         checkpoint_callback,
         WandbCallback(
-            gradient_save_freq=10000,
+            gradient_save_freq=100000,
             model_save_path=f"models/{run.id}",
-            model_save_freq=10000,
+            model_save_freq=100000,
             verbose=2,
         ),
     ],

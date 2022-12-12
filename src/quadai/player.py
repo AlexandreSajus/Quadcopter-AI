@@ -158,8 +158,8 @@ class SACPlayer(Player):
         self.name = "SAC"
         self.alpha = 50
         self.thruster_amplitude = 0.04
-        self.diff_amplitude = 0.0005
-        model_path = "src/quadai/models/rl_model_3330000_steps.zip"
+        self.diff_amplitude = 0.003
+        model_path = "src/quadai/models/rl_model_v2_5000000_steps.zip"
         self.path = model_path
         super().__init__()
 

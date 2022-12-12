@@ -46,7 +46,7 @@ class droneEnv(gym.Env):
         self.FPS = 60
         self.gravity = 0.08
         self.thruster_amplitude = 0.04
-        self.diff_amplitude = 0.0005
+        self.diff_amplitude = 0.003
         self.thruster_mean = 0.04
         self.mass = 1
         self.arm = 25
