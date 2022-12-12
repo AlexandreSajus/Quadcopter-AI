@@ -122,7 +122,7 @@ class DQNPlayer(Player):
     def __init__(self):
         self.name = "DQN"
         self.alpha = 50
-        model_path = "models/elite_newborn.h5"
+        model_path = "src/quadai/models/dqn_model_v0_1000000_steps.zip"
         self.path = os.path.join(os.path.dirname(__file__), model_path)
         super().__init__()
 
@@ -159,7 +159,7 @@ class SACPlayer(Player):
         self.alpha = 50
         self.thruster_amplitude = 0.04
         self.diff_amplitude = 0.003
-        model_path = "src/quadai/models/rl_model_v2_5000000_steps.zip"
+        model_path = "src/quadai/models/sac_model_v2_5000000_steps.zip"
         self.path = model_path
         super().__init__()
 

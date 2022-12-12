@@ -15,7 +15,7 @@ from math import sin, cos, pi, sqrt, atan2
 import pygame
 from pygame.locals import *
 
-from player import PIDPlayer
+from quadai.player import PIDPlayer
 
 
 def correct_path(current_path):

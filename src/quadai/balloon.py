@@ -150,7 +150,7 @@ def balloon():
     time_limit = 100
     respawn_timer_max = 3
 
-    players = [HumanPlayer(), PIDPlayer(), DQNPlayer(), SACPlayer()]
+    players = [HumanPlayer(), PIDPlayer(), SACPlayer()]
 
     # Generate 100 targets
     targets = []
