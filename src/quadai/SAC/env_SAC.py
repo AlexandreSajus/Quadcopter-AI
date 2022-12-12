@@ -98,7 +98,7 @@ class droneEnv(gym.Env):
             - distance_to_target : distance to the target
             - angle_to_target : angle between the drone and the target
             - angle_target_and_velocity : angle between the to_target vector and the velocity vector
-            - distance_to_target : distance to the target
+            - distance_to_target : distance to the target (HERE TWICE BY MISTAKE)
         """
         angle_to_up = self.a / 180 * pi
         velocity = sqrt(self.xd**2 + self.yd**2)
