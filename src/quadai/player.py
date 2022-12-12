@@ -7,11 +7,6 @@ https://github.com/AlexandreSajus/Quadcopter-AI
 This is where the players for the main game are defined
 """
 
-import os
-
-import numpy as np
-import tensorflow as tf
-
 import pygame
 from pygame.locals import *
 
@@ -115,41 +110,6 @@ class HumanPlayer(Player):
             thruster_left -= self.diff_amplitude
         if pressed_keys[K_RIGHT]:
             thruster_right -= self.diff_amplitude
-        return thruster_left, thruster_right
-
-
-class DQNPlayer(Player):
-    def __init__(self):
-        self.name = "DQN"
-        self.alpha = 50
-        model_path = "src/quadai/models/dqn_model_v0_1000000_steps.zip"
-        self.path = os.path.join(os.path.dirname(__file__), model_path)
-        super().__init__()
-
-        self.action_value = tf.keras.models.load_model(
-            self.path, custom_objects={"tf": tf}
-        )
-
-    def act(self, obs):
-        action = np.argmax(self.action_value(np.asarray([obs])))
-
-        thruster_left = self.thruster_mean
-        thruster_right = self.thruster_mean
-
-        if action == 0:
-            pass
-        elif action == 1:
-            thruster_left += self.thruster_amplitude
-            thruster_right += self.thruster_amplitude
-        elif action == 2:
-            thruster_left -= self.thruster_amplitude
-            thruster_right -= self.thruster_amplitude
-        elif action == 3:
-            thruster_left += self.diff_amplitude
-            thruster_right -= self.diff_amplitude
-        elif action == 4:
-            thruster_left -= self.diff_amplitude
-            thruster_right += self.diff_amplitude
         return thruster_left, thruster_right
 
 
