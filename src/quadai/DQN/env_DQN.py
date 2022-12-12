@@ -8,16 +8,16 @@ This is a gym environment based on drone_game (see drone_game.py for details)
 It is to be used with a DQN agent
 The goal is to reach randomly positoned targets
 """
+import os
+from math import sin, cos, pi, sqrt
+from random import randrange
 
 import numpy as np
 import gym
 from gym import spaces
 
 import pygame
-import os
 from pygame.locals import *
-from math import sin, cos, pi, sqrt
-from random import randrange
 
 
 class droneEnv(gym.Env):
@@ -46,7 +46,7 @@ class droneEnv(gym.Env):
         self.FPS = 60
         self.gravity = 0.08
         self.thruster_amplitude = 0.04
-        self.diff_amplitude = 0.0005
+        self.diff_amplitude = 0.0006
         self.thruster_mean = 0.04
         self.mass = 1
         self.arm = 25
@@ -63,13 +63,13 @@ class droneEnv(gym.Env):
         self.reward = 0
         self.time = 0
         self.time_limit = 20
-        if self.mouse_target == True:
+        if self.mouse_target is True:
             self.time_limit = 1000
 
         # 5 actions: Nothing, Up, Down, Right, Left
         self.action_space = gym.spaces.Discrete(5)
-        # 6 observations: x_to_target, x_speed, y_to_target, y_speed, angle, angle_speed
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(6,))
+        # 8 observations: angle_to_up, velocity, angle_velocity, distance_to_target, angle_to_target, angle_target_and_velocity, distance_to_target
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(7,))
 
     def reset(self):
         # Reset variables
@@ -82,8 +82,47 @@ class droneEnv(gym.Env):
         self.target_counter = 0
         self.reward = 0
         self.time = 0
+
+        return self.get_obs()
+
+    def get_obs(self) -> np.ndarray:
+        """
+        Calculates the observations
+
+        Returns:
+            np.ndarray: The normalized observations:
+            - angle_to_up : angle between the drone and the up vector (to observe gravity)
+            - velocity : velocity of the drone
+            - angle_velocity : angle of the velocity vector
+            - distance_to_target : distance to the target
+            - angle_to_target : angle between the drone and the target
+            - angle_target_and_velocity : angle between the to_target vector and the velocity vector
+            - distance_to_target : distance to the target
+        """
+        angle_to_up = self.a / 180 * pi
+        velocity = sqrt(self.xd**2 + self.yd**2)
+        angle_velocity = self.ad
+        distance_to_target = (
+            sqrt((self.xt - self.x) ** 2 + (self.yt - self.y) ** 2) / 500
+        )
+        angle_to_target = np.arctan2(self.yt - self.y, self.xt - self.x)
+        # Angle between the to_target vector and the velocity vector
+        angle_target_and_velocity = np.arctan2(
+            self.yt - self.y, self.xt - self.x
+        ) - np.arctan2(self.yd, self.xd)
+        distance_to_target = (
+            sqrt((self.xt - self.x) ** 2 + (self.yt - self.y) ** 2) / 500
+        )
         return np.array(
-            [self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]
+            [
+                angle_to_up,
+                velocity,
+                angle_velocity,
+                distance_to_target,
+                angle_to_target,
+                angle_target_and_velocity,
+                distance_to_target,
+            ]
         ).astype(np.float32)
 
     def step(self, action):
@@ -92,10 +131,10 @@ class droneEnv(gym.Env):
         action = int(action)
 
         # Act every 5 frames
-        for i in range(5):
+        for _ in range(5):
             self.time += 1 / 60
 
-            if self.mouse_target == True:
+            if self.mouse_target is True:
                 self.xt, self.yt = pygame.mouse.get_pos()
 
             # Initialize accelerations
@@ -141,38 +180,35 @@ class droneEnv(gym.Env):
             # Reward per step survived
             self.reward += 1 / 60
             # Penalty according to the distance to target
-            self.reward -= dist * 0.5 / (1000 * 60)
+            self.reward -= dist / (100 * 60)
 
             if dist < 50:
                 # Reward if close to target
                 self.xt = randrange(200, 600)
                 self.yt = randrange(200, 600)
-                self.reward += 50
+                self.reward += 100
 
             # If out of time
             if self.time > self.time_limit:
                 done = True
-                # Reward for surviving
-                self.reward += 10
                 break
 
             # If too far from target (crash)
             elif dist > 1000:
+                self.reward -= 1000
                 done = True
                 break
 
             else:
                 done = False
 
-            if self.render_every_frame == True:
+            if self.render_every_frame is True:
                 self.render("yes")
 
         info = {}
 
         return (
-            np.array(
-                [self.xt - self.x, self.xd, self.yt - self.y, self.yd, self.a, self.ad]
-            ).astype(np.float32),
+            self.get_obs(),
             self.reward,
             done,
             info,

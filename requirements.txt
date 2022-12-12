@@ -1,6 +1,5 @@
 numpy
 pygame
 gym
-learnrl
 tensorflow==2.10.0
 stable-baselines3

@@ -7,7 +7,7 @@ https://github.com/AlexandreSajus/2D-Quadcopter-AI
 This is a helpful way to test env_DQN
 """
 
-from quadai.DQN.env_DQN import droneEnv
+from env_DQN import droneEnv
 
 env = droneEnv(True, False)
 
@@ -24,7 +24,7 @@ print("Action space sample:")
 print(env.action_space.sample())
 
 # Choose an action to execute n_steps times
-action = 1
+action = 4
 n_steps = 20
 for step in range(n_steps):
     print("Step {}".format(step + 1))
