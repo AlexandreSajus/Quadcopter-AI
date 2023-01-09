@@ -137,6 +137,7 @@ runs
 # Common
 temp.py
 tmp
+models
 
 # Photoshop
 *.psd
