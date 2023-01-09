@@ -13,60 +13,97 @@ from wandb.integration.sb3 import WandbCallback
 
 from env_SAC import droneEnv
 
-# Compare runs according to learning rate
-for learning_rate in np.logspace(-4, -1, 10):
-    # Keep two decimals
-    round_lr = round(learning_rate, 5)
-    run = wandb.init(
-        project="quadai-lr",
-        sync_tensorboard=True,
-        monitor_gym=True,
-        name=f"lr_{round_lr}",
-        config={
-            "learning_rate": learning_rate,
-        },
-    )
+params = ["gamma", "learning_rate", "buffer_size", "tau", "batch_size"]
+gamma_range = [0.01, 0.1, 0.5, 0.9, 0.99]
+learning_rate_range = [0.00001, 0.0001, 0.001, 0.1, 1]
+buffer_size_range = [1, 500, 5000, 50000, 500000]
+tau_range = [0.00001, 0.001, 0.1, 0.5, 0.99]
+batch_size_range = [1, 32, 64, 128, 256]
+ranges = [
+    gamma_range,
+    learning_rate_range,
+    buffer_size_range,
+    tau_range,
+    batch_size_range,
+]
+defaults = [0.99, 0.0003, 50000, 0.005, 64]
 
-    # Create log dir
-    log_dir = "tmp/"
-    os.makedirs(log_dir, exist_ok=True)
+for i in range(len(params)):
+    for j in range(5):
+        # Set hyperparameters
+        gamma = defaults[0]
+        learning_rate = defaults[1]
+        buffer_size = defaults[2]
+        tau = defaults[3]
+        batch_size = defaults[4]
 
-    # Create and wrap the environment
-    env = droneEnv(False, False)
-    env = Monitor(env, log_dir)
+        if params[i] == "gamma":
+            gamma = ranges[i][j]
+        elif params[i] == "learning_rate":
+            learning_rate = ranges[i][j]
+        elif params[i] == "buffer_size":
+            buffer_size = ranges[i][j]
+        elif params[i] == "tau":
+            tau = ranges[i][j]
+        elif params[i] == "batch_size":
+            batch_size = ranges[i][j]
 
-    # Create SAC agent
-    model = SAC(
-        "MlpPolicy",
-        env,
-        verbose=2,
-        tensorboard_log=log_dir,
-        learning_rate=learning_rate,
-    )
+        run = wandb.init(
+            project="quadai-params",
+            sync_tensorboard=True,
+            monitor_gym=True,
+            name=f"{params[i]}_{ranges[i][j]}",
+            config={
+                "gamma": gamma,
+                "learning_rate": learning_rate,
+                "buffer_size": buffer_size,
+                "tau": tau,
+                "batch_size": batch_size,
+            },
+        )
 
-    # Create checkpoint callback
-    checkpoint_callback = CheckpointCallback(
-        save_freq=100000, save_path=log_dir, name_prefix="rl_model_lr"
-    )
+        # Create log dir
+        log_dir = "tmp/"
+        os.makedirs(log_dir, exist_ok=True)
 
-    # Train the agent
-    model.learn(
-        total_timesteps=500000,
-        callback=[
-            checkpoint_callback,
-            WandbCallback(
-                gradient_save_freq=5000,
-                model_save_path=f"models/{run.id}",
-                model_save_freq=100000,
-                verbose=2,
-            ),
-        ],
-    )
+        # Create and wrap the environment
+        env = droneEnv(False, False)
+        env = Monitor(env, log_dir)
 
-    # Close
-    env.close()
-    run.finish()
+        # Create SAC agent
+        model = SAC(
+            "MlpPolicy",
+            env,
+            verbose=2,
+            tensorboard_log=log_dir,
+            gamma=gamma,
+            learning_rate=learning_rate,
+            buffer_size=buffer_size,
+            tau=tau,
+            batch_size=batch_size,
+        )
 
+        # Create checkpoint callback
+        checkpoint_callback = CheckpointCallback(
+            save_freq=100000, save_path=log_dir, name_prefix="rl_model_lr"
+        )
 
+        # Train the agent
+        model.learn(
+            # CHANGE THIS TO 500000
+            total_timesteps=500000,
+            callback=[
+                checkpoint_callback,
+                WandbCallback(
+                    # CHANGE THIS TO 5000
+                    gradient_save_freq=5000,
+                    model_save_path=f"models/{run.id}",
+                    model_save_freq=100000,
+                    verbose=2,
+                ),
+            ],
+        )
 
-
+        # Close
+        env.close()
+        run.finish()
