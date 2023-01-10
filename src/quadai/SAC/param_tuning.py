@@ -14,8 +14,8 @@ from wandb.integration.sb3 import WandbCallback
 from env_SAC import droneEnv
 
 params = ["gamma", "learning_rate", "buffer_size", "tau", "batch_size"]
-gamma_range = [0.01, 0.1, 0.5, 0.9, 0.99]
-learning_rate_range = [0.00001, 0.0001, 0.001, 0.1, 1]
+gamma_range = []
+learning_rate_range = []
 buffer_size_range = [1, 500, 5000, 50000, 500000]
 tau_range = [0.00001, 0.001, 0.1, 0.5, 0.99]
 batch_size_range = [1, 32, 64, 128, 256]
@@ -29,7 +29,7 @@ ranges = [
 defaults = [0.99, 0.0003, 50000, 0.005, 64]
 
 for i in range(len(params)):
-    for j in range(5):
+    for j in range(len(ranges[i])):
         # Set hyperparameters
         gamma = defaults[0]
         learning_rate = defaults[1]
@@ -49,6 +49,7 @@ for i in range(len(params)):
             batch_size = ranges[i][j]
 
         run = wandb.init(
+            # CHANGE THIS to quadai-params
             project="quadai-params",
             sync_tensorboard=True,
             monitor_gym=True,
