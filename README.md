@@ -16,6 +16,13 @@ The currently implemented algorithms are:
 
 An explanation of the environment and its agent is explained in [this paper](Reinforcement_Learning_for_the_Control_of_Quadcopters.pdf).
 
+I also made a devlog about this project here:
+<p align="center">
+  <a href="https://youtu.be/J1hv0MJghag" target="_blank">
+    <img src="media/thumb.png" alt="Youtube Devlog" width="50%"/>
+  </a>
+</p>
+
 I added another game where the drone follows the mouse to move snow around a snowglobe.
 
 <p align="center">
