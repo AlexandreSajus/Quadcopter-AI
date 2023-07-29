@@ -2,3 +2,4 @@ numpy
 pygame
 gym
 stable-baselines3
+shimmy>=0.2.1
