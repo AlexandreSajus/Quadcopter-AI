@@ -35,10 +35,10 @@ The games are available to try as a Python package.
 
 Make sure you have Python installed on your computer. Then, in a terminal, run the following commands:
 
-### **1. Upgrade the setuptools package:**
+### **1. Force Downgrade pip**
 
 ```bash
-pip install --upgrade setuptools
+python -m pip install pip==21
 ```
 
 ### **2. Install the package with pip in your terminal:**
