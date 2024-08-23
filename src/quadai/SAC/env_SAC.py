@@ -25,6 +25,8 @@ class droneEnv(gym.Env):
     def __init__(self, render_every_frame, mouse_target):
         super(droneEnv, self).__init__()
 
+        path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(path,"../")
         self.render_every_frame = render_every_frame
         # Makes the target follow the mouse
         self.mouse_target = mouse_target
@@ -34,10 +36,10 @@ class droneEnv(gym.Env):
         self.screen = pygame.display.set_mode((800, 800))
         self.FramePerSec = pygame.time.Clock()
 
-        self.player = pygame.image.load(os.path.join("assets/sprites/drone_old.png"))
+        self.player = pygame.image.load(os.path.join(path,"assets/sprites/drone_old.png"))
         self.player.convert()
 
-        self.target = pygame.image.load(os.path.join("assets/sprites/target_old.png"))
+        self.target = pygame.image.load(os.path.join(path,"assets/sprites/target_old.png"))
         self.target.convert()
 
         pygame.font.init()

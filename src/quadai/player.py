@@ -18,6 +18,8 @@ from quadai.PID.controller_PID import PID
 
 
 class Player:
+    type: str = "Player"
+    name: str = "Player"
     def __init__(self):
         self.thruster_mean = 0.04
         self.thruster_amplitude = 0.04
@@ -33,6 +35,7 @@ class Player:
 class HumanPlayer(Player):
     def __init__(self):
         self.name = "Human"
+        self.type = "Human"
         self.alpha = 255
         super().__init__()
 
@@ -56,6 +59,7 @@ class HumanPlayer(Player):
 class PIDPlayer(Player):
     def __init__(self):
         self.name = "PID"
+        self.type = "PID"
         self.alpha = 50
         super().__init__()
 
@@ -95,6 +99,7 @@ class PIDPlayer(Player):
 class HumanPlayer(Player):
     def __init__(self):
         self.name = "Human"
+        self.type = "Human"
         self.alpha = 255
         super().__init__()
 
@@ -116,13 +121,14 @@ class HumanPlayer(Player):
 
 
 class SACPlayer(Player):
-    def __init__(self):
-        self.name = "SAC"
+    def __init__(self,name="SAC",model_path="models/sac_model_v2_5000000_steps.zip"):
+        self.name = name
+        self.type = "SAC"
         self.alpha = 50
         self.thruster_amplitude = 0.04
         self.diff_amplitude = 0.003
-        model_path = "models/sac_model_v2_5000000_steps.zip"
-        model_path = os.path.join(os.path.dirname(__file__), model_path)
+        if not model_path.startswith("/"):
+            model_path = os.path.join(os.path.dirname(__file__), model_path)
         self.path = model_path
         super().__init__()
 

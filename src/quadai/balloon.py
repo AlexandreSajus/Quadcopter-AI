@@ -14,8 +14,9 @@ from math import sin, cos, pi, sqrt
 import numpy as np
 import pygame
 from pygame.locals import *
-from quadai.player import HumanPlayer, PIDPlayer, SACPlayer
+from quadai.player import HumanPlayer, PIDPlayer, SACPlayer,Player
 
+def_players = [HumanPlayer(), PIDPlayer(), SACPlayer()]
 
 def correct_path(current_path):
     """
@@ -24,7 +25,7 @@ def correct_path(current_path):
     return os.path.join(os.path.dirname(__file__), current_path)
 
 
-def balloon():
+def balloon(players : list[Player] = def_players):
     """
     Runs the balloon game.
     """
@@ -150,8 +151,6 @@ def balloon():
     time_limit = 100
     respawn_timer_max = 3
 
-    players = [HumanPlayer(), PIDPlayer(), SACPlayer()]
-
     # Generate 100 targets
     targets = []
     for i in range(100):
@@ -188,7 +187,7 @@ def balloon():
                 player.angular_acceleration = 0
 
                 # Calculate propeller force in function of input
-                if player.name == "DQN" or player.name == "PID":
+                if player.type == "DQN" or player.type == "PID":
                     thruster_left, thruster_right = player.act(
                         [
                             targets[player.target_counter][0] - player.x_position,
@@ -199,7 +198,7 @@ def balloon():
                             player.angular_speed,
                         ]
                     )
-                elif player.name == "SAC":
+                elif player.type == "SAC":
                     angle_to_up = player.angle / 180 * pi
                     velocity = sqrt(player.x_speed**2 + player.y_speed**2)
                     angle_velocity = player.angular_speed
@@ -285,7 +284,7 @@ def balloon():
                     player.respawn_timer = respawn_timer_max
             else:
                 # Display respawn timer
-                if player.name == "Human":
+                if player.type == "Human":
                     respawn_text = respawn_timer_font.render(
                         str(int(player.respawn_timer) + 1), True, (255, 255, 255)
                     )
@@ -385,10 +384,13 @@ def balloon():
     # Print scores and who won
     print("")
     scores = []
+    dict_scores = {}
     for player in players:
         print(player.name + " collected : " + str(player.target_counter))
         scores.append(player.target_counter)
+        dict_scores[player.name] = player.target_counter
     winner = players[np.argmax(scores)].name
 
     print("")
     print("Winner is : " + winner + " !")
+    return dict_scores
